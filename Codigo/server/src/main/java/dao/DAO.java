@@ -2,12 +2,14 @@
 
 package dao;
 
-import java.sql.*;
-import java.security.*;
-import java.math.*;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class DAO {
-	protected Connection conexao;
+	protected static Connection conexao;
 	
 	public DAO() {
 		conexao = null;
@@ -15,12 +17,12 @@ public class DAO {
 	
 	public boolean conectar() {
 		String driverName = "org.postgresql.Driver";                    
-		String serverName = "localhost"; // vai mudar pra url
+		String serverName = "host.docker.internal"; // vai mudar pra url
 		String mydatabase = "TI2-Bilhete Facil";
 		int porta = 5432;
 		String url = "jdbc:postgresql://" + serverName + ":" + porta +"/" + mydatabase;
 		String username = "postgres"; // login
-		String password = "strong128"; // login 
+		String password = "rmsr2107"; // login 
 		boolean status = false;
 
 		try {

@@ -1,15 +1,19 @@
-import { Link, useLoaderData } from 'react-router-dom'
-import img from '../../../assets/event.jpg'
 import { Button } from '@/components/ui/button'
+import { api } from '@/lib/api'
+import { formatCurrency } from '@/lib/utils'
+import { Ticket } from '@/shared/interfaces/ticket.interface'
 import { CaretLeft, ShoppingCart } from '@phosphor-icons/react'
+import { Link, useLoaderData } from 'react-router-dom'
 import { toast } from 'sonner'
+import img from '../../../assets/event.jpg'
 
-export function loader({ params }: { params: { id: string } }) {
-  return { id: params.id }
+export async function loader({ params }: { params: { id: string } }) {
+  const response = await api.get(`/ingressos/${params.id}`)
+  return JSON.parse(response.data)
 }
 
 export function Item() {
-  const { id } = useLoaderData() as { id: string }
+  const ticket = useLoaderData() as Ticket
 
   function handleAddToCart() {
     toast('Ingresso adicionado ao carrinho')
@@ -32,17 +36,15 @@ export function Item() {
         <div className="flex-1 flex flex-col gap-4 justify-between">
           <div>
             <span className="text-muted-foreground mb-2 block">
-              #{id.padStart(4, '0')}
+              #{ticket.id.toString().padStart(4, '0')}
             </span>
-            <h1 className="text-lg font-bold">Show Kanye West</h1>
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-              Explicabo itaque quae voluptatibus commodi, ab eveniet blanditiis
-              magnam vel nisi vero.
-            </p>
+            <h1 className="text-lg font-bold">{ticket.nome}</h1>
+            <p>{ticket.descricao}</p>
           </div>
           <div className="flex flex-col gap-2">
-            <strong className="text-2xl">R$ 250,00</strong>
+            <strong className="text-2xl">
+              {formatCurrency(ticket.precoevento)}
+            </strong>
             <Link className="flex-1" to="/checkout">
               <Button className="w-full">Comprar</Button>
             </Link>
