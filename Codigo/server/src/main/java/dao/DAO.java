@@ -17,12 +17,12 @@ public class DAO {
 	
 	public boolean conectar() {
 		String driverName = "org.postgresql.Driver";                    
-		String serverName = "host.docker.internal"; // vai mudar pra url
+		String serverName = "ti2-bilhete-facil.postgres.database.azure.com"; // vai mudar pra url
 		String mydatabase = "TI2-Bilhete Facil";
 		int porta = 5432;
 		String url = "jdbc:postgresql://" + serverName + ":" + porta +"/" + mydatabase;
 		String username = "postgres"; // login
-		String password = "rmsr2107"; // login 
+		String password = "Rmsr21/07"; // login 
 		boolean status = false;
 
 		try {

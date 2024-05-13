@@ -22,13 +22,14 @@ public class IngressoDAO extends DAO {
     public boolean insere(Ingresso ingresso) {
         boolean status = false;
         try {
-            String sql = "INSERT INTO ingresso (id, nome, descricao, precoevento, negociar) " + "VALUES (?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO ingresso (id, nome, descricao, precoevento, negociar, ingresso_pic) " + "VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement ps = conexao.prepareStatement(sql);
             ps.setInt(1, ingresso.getId());
             ps.setString(2, ingresso.getNome());
             ps.setString(3, ingresso.getDescricao());
             ps.setInt(4, ingresso.getPrecoevento());
             ps.setBoolean(5, ingresso.getNegociar());
+            ps.setString(6, ingresso.getIngressoPic());
             System.out.println(sql); // printa o que você está fazendo
             ps.executeUpdate();
             status = true; // boolean
@@ -57,12 +58,13 @@ public class IngressoDAO extends DAO {
         boolean status = false;
         try {
             PreparedStatement ps = conexao
-                    .prepareStatement("UPDATE ingresso SET nome=?, descricao=?, precoevento=?,negociar=? WHERE id=?");
+                    .prepareStatement("UPDATE ingresso SET nome=?, descricao=?, precoevento=?,negociar=?, ingresso_pic=? WHERE id=?");
             ps.setString(1, ingresso.getNome());
             ps.setString(2, ingresso.getDescricao());
             ps.setInt(3, ingresso.getPrecoevento());
             ps.setBoolean(4, ingresso.getNegociar());
-            ps.setInt(5, id);
+            ps.setString(5, ingresso.getIngressoPic());
+            ps.setInt(6, id);
             int ver = ps.executeUpdate();
             ps.close();
             if (ver > 0) {
@@ -87,6 +89,7 @@ public class IngressoDAO extends DAO {
                 ingresso.setDescricao(rs.getString("descricao"));
                 ingresso.setPrecoevento(rs.getInt("precoevento"));
                 ingresso.setNegociar(rs.getBoolean("negociar"));
+                ingresso.setIngressoPic(rs.getString("ingresso_pic"));
             }
             rs.close();
             ps.close();
@@ -108,6 +111,7 @@ public class IngressoDAO extends DAO {
                 ingresso.setDescricao(rs.getString("descricao"));
                 ingresso.setPrecoevento(rs.getInt("precoevento"));
                 ingresso.setNegociar(rs.getBoolean("negociar"));
+                ingresso.setIngressoPic(rs.getString("ingresso_pic"));
                 ingressos.add(ingresso);
             }
             rs.close();

@@ -5,7 +5,6 @@ import { Ticket } from '@/shared/interfaces/ticket.interface'
 import { CaretLeft, ShoppingCart } from '@phosphor-icons/react'
 import { Link, useLoaderData } from 'react-router-dom'
 import { toast } from 'sonner'
-import img from '../../../assets/event.jpg'
 
 export async function loader({ params }: { params: { id: string } }) {
   const response = await api.get(`/ingressos/${params.id}`)
@@ -29,8 +28,8 @@ export function Item() {
       </Link>
       <div className="flex flex-wrap gap-4">
         <img
-          className="aspect-square object-cover md:max-w-sm w-full flex-1"
-          src={img}
+          className="aspect-square rounded-md object-cover md:max-w-sm w-full flex-1"
+          src={ticket.ingresso_pic}
           alt=""
         />
         <div className="flex-1 flex flex-col gap-4 justify-between">

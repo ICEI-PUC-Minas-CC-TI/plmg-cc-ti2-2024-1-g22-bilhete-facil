@@ -3,7 +3,6 @@ import { Ticket } from '@/shared/interfaces/ticket.interface'
 import { ShoppingCart } from '@phosphor-icons/react'
 import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
-import img from '../../assets/event.jpg'
 import { Button } from '../ui/button'
 
 export function TicketItem(ticket: Ticket) {
@@ -24,7 +23,7 @@ export function TicketItem(ticket: Ticket) {
         <div className="rounded-md overflow-hidden">
           <img
             className="aspect-square object-cover group-hover:scale-105 transition-transform"
-            src={img}
+            src={ticket.ingresso_pic}
             alt=""
           />
         </div>

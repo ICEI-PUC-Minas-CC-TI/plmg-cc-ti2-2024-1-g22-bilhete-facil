@@ -9,6 +9,7 @@ public class Ingresso {
     private String descricao;
     private int precoevento;
     private Boolean negociar;
+		private String ingresso_pic;
 
   public int getId() {
 		return id;
@@ -27,6 +28,12 @@ public class Ingresso {
 	}
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+	public String getIngressoPic() {
+		return ingresso_pic;
+	}
+	public void setIngressoPic(String ingresso_pic) {
+		this.ingresso_pic = ingresso_pic;
 	}
 	public int getPrecoevento() {
 		return precoevento;

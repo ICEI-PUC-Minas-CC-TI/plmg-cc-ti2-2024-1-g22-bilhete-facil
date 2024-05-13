@@ -3,4 +3,5 @@ export interface Ticket {
   nome: string
   descricao: string
   precoevento: number
+  ingresso_pic: string
 }
