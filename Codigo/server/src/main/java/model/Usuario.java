@@ -1,9 +1,7 @@
-//CLASSES DIAGRAMA GET SET
-
 package model;
 
 public class Usuario {
-    private int id;
+    private int idUsuario;
     private String nome;
     private String email;
     private int idade;
@@ -14,13 +12,23 @@ public class Usuario {
     public Usuario() {
     }
 
-    // Métodos getters e setters
-    public int getId() {
-        return id;
+    // Construtor com parâmetros
+    public Usuario(int idUsuario, String nome, String email, int idade, String cpf, String senha) {
+        this.idUsuario = idUsuario;
+        this.nome = nome;
+        this.email = email;
+        this.idade = idade;
+        this.cpf = cpf;
+        this.senha = senha;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    // Métodos getters e setters
+    public int getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public String getNome() {
@@ -62,17 +70,16 @@ public class Usuario {
     public void setSenha(String senha) {
         this.senha = senha;
     }
+
     @Override
     public String toString() {
         return "Usuario{" +
-                "id=" + id +
+                "idUsuario=" + idUsuario +
                 ", nome='" + nome + '\'' +
                 ", email='" + email + '\'' +
                 ", idade=" + idade +
                 ", cpf='" + cpf + '\'' +
                 ", senha='" + senha + '\'' +
                 '}';
-
+    }
 }
-}
-

@@ -22,79 +22,78 @@ public class IngressoDAO extends DAO {
     public boolean insere(Ingresso ingresso) {
         boolean status = false;
         try {
-            String sql = "INSERT INTO ingresso (id, nome, descricao, precoevento, negociar, ingresso_pic) " + "VALUES (?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO Ingresso (descricao, imagem, preco, negociar, Usuario_idUsuario) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement ps = conexao.prepareStatement(sql);
-            ps.setInt(1, ingresso.getId());
-            ps.setString(2, ingresso.getNome());
-            ps.setString(3, ingresso.getDescricao());
-            ps.setInt(4, ingresso.getPrecoevento());
-            ps.setBoolean(5, ingresso.getNegociar());
-            ps.setString(6, ingresso.getIngressoPic());
-            System.out.println(sql); // printa o que você está fazendo
+            ps.setString(1, ingresso.getDescricao());
+            ps.setBytes(2, ingresso.getImagem());
+            ps.setDouble(3, ingresso.getPreco());
+            ps.setBoolean(4, ingresso.isNegociar());
+            ps.setInt(5, ingresso.getUsuarioIdUsuario());
             ps.executeUpdate();
-            status = true; // boolean
+            status = true;
         } catch (Exception e) {
-            System.out.println("erro insereIngresso: " + e.getMessage());
+            System.out.println("Erro ao inserir ingresso: " + e.getMessage());
         }
         return status;
     }
 
-    public boolean delete(int id) {
+    public boolean delete(int idIngresso) {
         boolean status = false;
         try {
             Statement st = conexao.createStatement();
-            String sql = "DELETE FROM ingresso WHERE id=" + id;
+            String sql = "DELETE FROM Ingresso WHERE idIngresso = " + idIngresso;
             int ver = st.executeUpdate(sql);
             if (ver > 0) {
                 status = true;
             }
         } catch (Exception e) {
-            System.out.println("erro deleteIngresso: " + e.getMessage());
+            System.out.println("Erro ao deletar ingresso: " + e.getMessage());
         }
         return status;
     }
 
-    public boolean update(int id, Ingresso ingresso) {
+    public boolean update(int idIngresso, Ingresso ingresso) {
         boolean status = false;
         try {
-            PreparedStatement ps = conexao
-                    .prepareStatement("UPDATE ingresso SET nome=?, descricao=?, precoevento=?,negociar=?, ingresso_pic=? WHERE id=?");
-            ps.setString(1, ingresso.getNome());
-            ps.setString(2, ingresso.getDescricao());
-            ps.setInt(3, ingresso.getPrecoevento());
-            ps.setBoolean(4, ingresso.getNegociar());
-            ps.setString(5, ingresso.getIngressoPic());
-            ps.setInt(6, id);
+            String sql = "UPDATE Ingresso SET descricao=?, imagem=?, preco=?, negociar=?, Usuario_idUsuario=? WHERE idIngresso=?";
+            PreparedStatement ps = conexao.prepareStatement(sql);
+            ps.setString(1, ingresso.getDescricao());
+            ps.setBytes(2, ingresso.getImagem());
+            ps.setDouble(3, ingresso.getPreco());
+            ps.setBoolean(4, ingresso.isNegociar());
+            ps.setInt(5, ingresso.getUsuarioIdUsuario());
+            ps.setInt(6, idIngresso);
             int ver = ps.executeUpdate();
             ps.close();
             if (ver > 0) {
                 status = true;
             }
         } catch (Exception e) {
-            System.out.println("erro deleteIngresso: " + e.getMessage());
+            System.out.println("Erro ao atualizar ingresso: " + e.getMessage());
         }
         return status;
     }
 
-    public Ingresso getById(int id) {
+    public Ingresso getById(int idIngresso) {
         Ingresso ingresso = null;
         try {
-            PreparedStatement ps = conexao.prepareStatement("SELECT *from ingresso WHERE id=?");
-            ps.setInt(1, id);
+            String sql = "SELECT * FROM Ingresso WHERE idIngresso=?";
+            PreparedStatement ps = conexao.prepareStatement(sql);
+            ps.setInt(1, idIngresso);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 ingresso = new Ingresso();
-                ingresso.setId(rs.getInt("id"));
-                ingresso.setNome(rs.getString("nome"));
+                ingresso.setIdIngresso(rs.getInt("idIngresso"));
                 ingresso.setDescricao(rs.getString("descricao"));
-                ingresso.setPrecoevento(rs.getInt("precoevento"));
+                ingresso.setImagem(rs.getBytes("imagem"));
+                ingresso.setPreco(rs.getDouble("preco"));
                 ingresso.setNegociar(rs.getBoolean("negociar"));
-                ingresso.setIngressoPic(rs.getString("ingresso_pic"));
+                ingresso.setUsuarioIdUsuario(rs.getInt("Usuario_idUsuario"));
             }
             rs.close();
             ps.close();
         } catch (Exception e) {
-            System.out.println("erro getByIdIngresso: " + e.getMessage());
+            System.out.println("Erro ao obter ingresso por ID: " + e.getMessage());
         }
         return ingresso;
     }
@@ -102,22 +101,23 @@ public class IngressoDAO extends DAO {
     public static List<Ingresso> getAll() {
         List<Ingresso> ingressos = new ArrayList<>();
         try {
+            String sql = "SELECT * FROM Ingresso";
             Statement st = conexao.createStatement();
-            ResultSet rs = st.executeQuery("SELECT * FROM ingresso");
+            ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
                 Ingresso ingresso = new Ingresso();
-                ingresso.setId(rs.getInt("id"));
-                ingresso.setNome(rs.getString("nome"));
+                ingresso.setIdIngresso(rs.getInt("idIngresso"));
                 ingresso.setDescricao(rs.getString("descricao"));
-                ingresso.setPrecoevento(rs.getInt("precoevento"));
+                ingresso.setImagem(rs.getBytes("imagem"));
+                ingresso.setPreco(rs.getDouble("preco"));
                 ingresso.setNegociar(rs.getBoolean("negociar"));
-                ingresso.setIngressoPic(rs.getString("ingresso_pic"));
+                ingresso.setUsuarioIdUsuario(rs.getInt("Usuario_idUsuario"));
                 ingressos.add(ingresso);
             }
             rs.close();
             st.close();
         } catch (Exception e) {
-            System.out.println("erro getAllIngresso: " + e.getMessage());
+            System.out.println("Erro ao obter todos os ingressos: " + e.getMessage());
         }
         return ingressos;
     }
