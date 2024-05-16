@@ -19,17 +19,17 @@ export function TicketItem(ticket: Ticket) {
       >
         <ShoppingCart size={18} />
       </Button>
-      <Link to={`/item/${ticket.id}`} className="group">
+      <Link to={`/item/${ticket.idIngresso}`} className="group">
         <div className="rounded-md overflow-hidden">
           <img
             className="aspect-square object-cover group-hover:scale-105 transition-transform"
-            src={ticket.ingresso_pic}
+            src={ticket.imagem}
             alt=""
           />
         </div>
         <strong className="text-lg block">{ticket.nome}</strong>
         <span className="text-muted-foreground">
-          {formatCurrency(ticket.precoevento)}
+          {formatCurrency(ticket.preco)}
         </span>
       </Link>
     </div>

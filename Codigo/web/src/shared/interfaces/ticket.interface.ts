@@ -1,7 +1,7 @@
 export interface Ticket {
-  id: number
+  idIngresso: number
   nome: string
   descricao: string
-  precoevento: number
-  ingresso_pic: string
+  preco: number
+  imagem: string
 }

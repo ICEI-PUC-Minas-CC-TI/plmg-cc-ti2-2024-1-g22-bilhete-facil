@@ -92,11 +92,8 @@ public class Aplicacao {
         post("/insere_ingresso", (request, response) -> {
             Ingresso ingresso = gson.fromJson(request.body(), Ingresso.class);
 
-            String imagePath = request.queryParams("imagem");
-            String pdfPath = request.queryParams("pdf");
-
-            ingresso.setIngressoPic(imagePath);
-            ingresso.setIngressoPdf(pdfPath);
+            // String pdfPath = request.queryParams("pdf");
+            // ingresso.setIngressoPdf(pdfPath);
 
             ingressoDAO.insere(ingresso);
 
@@ -110,11 +107,8 @@ public class Aplicacao {
             int id = Integer.parseInt(request.params(":id"));
             Ingresso ingresso = gson.fromJson(request.body(), Ingresso.class);
 
-            String imagePath = request.queryParams("imagem");
-            String pdfPath = request.queryParams("pdf");
-
-            ingresso.setIngressoPic(imagePath);
-            ingresso.setIngressoPdf(pdfPath);
+            // String pdfPath = request.queryParams("pdf");
+            // ingresso.setIngressoPdf(pdfPath);
 
             boolean ingressoAtualizado = ingressoDAO.update(id, ingresso);
 
@@ -141,9 +135,9 @@ public class Aplicacao {
                 compra.setUsuarioIdUsuario(usuarioId);
                 compra.setIngressoIdIngresso(ingressoId);
                 compra.setDataCompra(new Timestamp(System.currentTimeMillis()));
-                compra.setPrecoFinal(ingresso.getPrecoevento()); // Use o preço do evento ou outro valor adequado
+                compra.setPrecoFinal(ingresso.getPreco()); // Use o preço do evento ou outro valor adequado
                 compraDAO.insere(compra);
-                ingresso.setUsuarioIdUsuario(usuarioId); // Atualiza o ingresso com o ID do novo proprietário
+                // ingresso.setUsuarioIdUsuario(usuarioId); // Atualiza o ingresso com o ID do novo proprietário
                 ingressoDAO.update(ingressoId, ingresso);
                 return "Ingresso comprado com sucesso!";
             } else {
@@ -151,43 +145,6 @@ public class Aplicacao {
                 return "Ingresso não encontrado!";
             }
         }, jsonTransformer);
-
-        post("/uploadImagem", (request, response) -> {
-            String uploadDirectory = "uploads/images"; // Diretório de upload
-
-            File uploadDir = new File(uploadDirectory);
-            if (!uploadDir.exists()) {
-                uploadDir.mkdirs();
-            }
-
-            DiskFileItemFactory factory = new DiskFileItemFactory();
-            factory.setSizeThreshold(1024 * 1024);
-            factory.setRepository(new File(System.getProperty("java.io.tmpdir")));
-
-            ServletFileUpload upload = new ServletFileUpload(factory);
-            upload.setSizeMax(1024 * 1024 * 5); // Limite de 5MB
-
-            try {
-                List<FileItem> formItems = upload.parseRequest(request.raw());
-                for (FileItem item : formItems) {
-                    if (!item.isFormField()) {
-                        String fileName = new File(item.getName()).getName();
-                        String uniqueName = UUID.randomUUID().toString() + "_" + fileName;
-                        String filePath = uploadDirectory + File.separator + uniqueName;
-                        File storeFile = new File(filePath);
-                        item.write(storeFile);
-                        response.status(200);
-                        return "Imagem carregada com sucesso! Caminho: " + filePath;
-                    }
-                }
-            } catch (Exception ex) {
-                response.status(500);
-                return "Erro ao carregar a imagem: " + ex.getMessage();
-            }
-
-            response.status(400);
-            return "Nenhum arquivo enviado.";
-        });
 
         post("/uploadPdf", (request, response) -> {
             String uploadDirectory = "uploads/pdfs"; // Diretório de upload

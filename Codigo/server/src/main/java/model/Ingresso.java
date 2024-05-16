@@ -6,26 +6,35 @@ package model;
 public class Ingresso {
     private int idIngresso;
     private String descricao;
-    private byte[] imagem;
+    private String imagem;
     private double preco;
     private boolean negociar;
-    private int usuarioIdUsuario;
+    // private int usuarioIdUsuario;
+    private String nome;
 
     // Construtor vazio
     public Ingresso() {
     }
 
     // Construtor com parâmetros
-    public Ingresso(int idIngresso, String descricao, byte[] imagem, double preco, boolean negociar, int usuarioIdUsuario) {
+    public Ingresso(int idIngresso, String descricao, String imagem, double preco, boolean negociar, int usuarioIdUsuario) {
         this.idIngresso = idIngresso;
         this.descricao = descricao;
         this.imagem = imagem;
         this.preco = preco;
         this.negociar = negociar;
-        this.usuarioIdUsuario = usuarioIdUsuario;
+        // this.usuarioIdUsuario = usuarioIdUsuario;
     }
 
     // Métodos getters e setters
+    public String getNome() {
+      return nome;
+    }
+
+    public void setNome(String nome) {
+      this.nome = nome;
+    }
+    
     public int getIdIngresso() {
         return idIngresso;
     }
@@ -42,11 +51,11 @@ public class Ingresso {
         this.descricao = descricao;
     }
 
-    public byte[] getImagem() {
+    public String getImagem() {
         return imagem;
     }
 
-    public void setImagem(byte[] imagem) {
+    public void setImagem(String imagem) {
         this.imagem = imagem;
     }
 
@@ -66,13 +75,13 @@ public class Ingresso {
         this.negociar = negociar;
     }
 
-    public int getUsuarioIdUsuario() {
-        return usuarioIdUsuario;
-    }
+    // public int getUsuarioIdUsuario() {
+    //     return usuarioIdUsuario;
+    // }
 
-    public void setUsuarioIdUsuario(int usuarioIdUsuario) {
-        this.usuarioIdUsuario = usuarioIdUsuario;
-    }
+    // public void setUsuarioIdUsuario(int usuarioIdUsuario) {
+    //     this.usuarioIdUsuario = usuarioIdUsuario;
+    // }
 
     @Override
     public String toString() {
@@ -81,7 +90,7 @@ public class Ingresso {
                 ", descricao='" + descricao + '\'' +
                 ", preco=" + preco +
                 ", negociar=" + negociar +
-                ", usuarioIdUsuario=" + usuarioIdUsuario +
+                // ", usuarioIdUsuario=" + usuarioIdUsuario +
                 '}';
     }
 }

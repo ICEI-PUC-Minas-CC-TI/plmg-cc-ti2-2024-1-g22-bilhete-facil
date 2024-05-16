@@ -22,13 +22,14 @@ public class IngressoDAO extends DAO {
     public boolean insere(Ingresso ingresso) {
         boolean status = false;
         try {
-            String sql = "INSERT INTO Ingresso (descricao, imagem, preco, negociar, Usuario_idUsuario) VALUES (?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO Ingresso (descricao, imagem, preco, negociar, nome) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement ps = conexao.prepareStatement(sql);
             ps.setString(1, ingresso.getDescricao());
-            ps.setBytes(2, ingresso.getImagem());
+            ps.setString(2, ingresso.getImagem());
             ps.setDouble(3, ingresso.getPreco());
             ps.setBoolean(4, ingresso.isNegociar());
-            ps.setInt(5, ingresso.getUsuarioIdUsuario());
+            // ps.setInt(5, ingresso.getUsuarioIdUsuario());
+            ps.setString(5, ingresso.getNome());
             ps.executeUpdate();
             status = true;
         } catch (Exception e) {
@@ -55,14 +56,15 @@ public class IngressoDAO extends DAO {
     public boolean update(int idIngresso, Ingresso ingresso) {
         boolean status = false;
         try {
-            String sql = "UPDATE Ingresso SET descricao=?, imagem=?, preco=?, negociar=?, Usuario_idUsuario=? WHERE idIngresso=?";
+            String sql = "UPDATE Ingresso SET descricao=?, imagem=?, preco=?, negociar=?, Usuario_idUsuario=?, nome=? WHERE idIngresso=?";
             PreparedStatement ps = conexao.prepareStatement(sql);
             ps.setString(1, ingresso.getDescricao());
-            ps.setBytes(2, ingresso.getImagem());
+            ps.setString(2, ingresso.getImagem());
             ps.setDouble(3, ingresso.getPreco());
             ps.setBoolean(4, ingresso.isNegociar());
-            ps.setInt(5, ingresso.getUsuarioIdUsuario());
+            // ps.setInt(5, ingresso.getUsuarioIdUsuario());
             ps.setInt(6, idIngresso);
+            ps.setString(7, ingresso.getNome());
             int ver = ps.executeUpdate();
             ps.close();
             if (ver > 0) {
@@ -84,11 +86,12 @@ public class IngressoDAO extends DAO {
             if (rs.next()) {
                 ingresso = new Ingresso();
                 ingresso.setIdIngresso(rs.getInt("idIngresso"));
+                ingresso.setNome(rs.getString("nome"));
                 ingresso.setDescricao(rs.getString("descricao"));
-                ingresso.setImagem(rs.getBytes("imagem"));
+                ingresso.setImagem(rs.getString("imagem"));
                 ingresso.setPreco(rs.getDouble("preco"));
                 ingresso.setNegociar(rs.getBoolean("negociar"));
-                ingresso.setUsuarioIdUsuario(rs.getInt("Usuario_idUsuario"));
+                // ingresso.setUsuarioIdUsuario(rs.getInt("Usuario_idUsuario"));
             }
             rs.close();
             ps.close();
@@ -107,11 +110,12 @@ public class IngressoDAO extends DAO {
             while (rs.next()) {
                 Ingresso ingresso = new Ingresso();
                 ingresso.setIdIngresso(rs.getInt("idIngresso"));
+                ingresso.setNome(rs.getString("nome"));
                 ingresso.setDescricao(rs.getString("descricao"));
-                ingresso.setImagem(rs.getBytes("imagem"));
+                ingresso.setImagem(rs.getString("imagem"));
                 ingresso.setPreco(rs.getDouble("preco"));
                 ingresso.setNegociar(rs.getBoolean("negociar"));
-                ingresso.setUsuarioIdUsuario(rs.getInt("Usuario_idUsuario"));
+                // ingresso.setUsuarioIdUsuario(rs.getInt("Usuario_idUsuario"));
                 ingressos.add(ingresso);
             }
             rs.close();

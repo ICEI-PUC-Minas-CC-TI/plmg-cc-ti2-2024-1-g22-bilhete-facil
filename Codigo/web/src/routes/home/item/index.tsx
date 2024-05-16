@@ -29,21 +29,19 @@ export function Item() {
       <div className="flex flex-wrap gap-4">
         <img
           className="aspect-square rounded-md object-cover md:max-w-sm w-full flex-1"
-          src={ticket.ingresso_pic}
+          src={ticket.imagem}
           alt=""
         />
         <div className="flex-1 flex flex-col gap-4 justify-between">
           <div>
             <span className="text-muted-foreground mb-2 block">
-              #{ticket.id.toString().padStart(4, '0')}
+              #{ticket.idIngresso.toString().padStart(4, '0')}
             </span>
             <h1 className="text-lg font-bold">{ticket.nome}</h1>
             <p>{ticket.descricao}</p>
           </div>
           <div className="flex flex-col gap-2">
-            <strong className="text-2xl">
-              {formatCurrency(ticket.precoevento)}
-            </strong>
+            <strong className="text-2xl">{formatCurrency(ticket.preco)}</strong>
             <Link className="flex-1" to="/checkout">
               <Button className="w-full">Comprar</Button>
             </Link>

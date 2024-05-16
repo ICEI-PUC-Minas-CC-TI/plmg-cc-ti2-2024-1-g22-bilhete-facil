@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button'
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -14,6 +15,7 @@ import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { FileInput } from '../file-input'
 import { Textarea } from '../ui/textarea'
+import { Switch } from '../ui/switch'
 
 const MAX_FILE_SIZE = 5000000
 const ACCEPTED_IMAGE_TYPES = [
@@ -29,7 +31,7 @@ const formSchema = z.object({
   price: z.string().refine((val) => !Number.isNaN(parseInt(val, 10)), {
     message: 'Expected number, received a string',
   }),
-  url: z
+  image: z
     .instanceof(FileList)
     .refine((files) => files?.length === 1, 'File is required')
     .refine(
@@ -40,24 +42,27 @@ const formSchema = z.object({
       (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
       '.jpg, .jpeg, .png and .webp files are accepted.',
     ),
+  negotiable: z.boolean(),
 })
 
 export function SellTicketForm() {
   const [localUrl, setLocalUrl] = useState('')
+  const [imageUrl, setImageUrl] = useState('')
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+    console.log({ imageUrl, ...values })
   }
 
-  const fileRef = form.register('url')
+  const fileRef = form.register('image')
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FileInput
+          setImageUrl={setImageUrl}
           localUrl={localUrl}
           setLocalUrl={setLocalUrl}
           fileRef={fileRef}
@@ -103,6 +108,26 @@ export function SellTicketForm() {
                 <Input type="number" placeholder="R$ 150,00" {...field} />
               </FormControl>
               <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="negotiable"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-between">
+              <div className="space-y-0.5">
+                <FormLabel>Negociável</FormLabel>
+                <FormDescription>
+                  Aceitar ofertas sobre o preço do seu evento
+                </FormDescription>
+              </div>
+              <FormControl>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
             </FormItem>
           )}
         />
