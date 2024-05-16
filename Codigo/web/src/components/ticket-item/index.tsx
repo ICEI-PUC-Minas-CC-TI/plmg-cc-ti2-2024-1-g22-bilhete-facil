@@ -22,7 +22,7 @@ export function TicketItem(ticket: Ticket) {
       <Link to={`/item/${ticket.idIngresso}`} className="group">
         <div className="rounded-md overflow-hidden">
           <img
-            className="aspect-square object-cover group-hover:scale-105 transition-transform"
+            className="aspect-square w-full object-cover group-hover:scale-105 transition-transform"
             src={ticket.imagem}
             alt=""
           />

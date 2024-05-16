@@ -9,13 +9,15 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { api } from '@/lib/api'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import * as z from 'zod'
 import { FileInput } from '../file-input'
-import { Textarea } from '../ui/textarea'
 import { Switch } from '../ui/switch'
+import { Textarea } from '../ui/textarea'
 
 const MAX_FILE_SIZE = 5000000
 const ACCEPTED_IMAGE_TYPES = [
@@ -50,10 +52,40 @@ export function SellTicketForm() {
   const [imageUrl, setImageUrl] = useState('')
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      negotiable: false,
+    },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log({ imageUrl, ...values })
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const ticket = {
+      nome: values.event,
+      descricao: values.description,
+      imagem: imageUrl,
+      preco: values.price,
+      negociar: values.negotiable,
+    }
+
+    try {
+      const response = await api.post('/insere_ingresso', { ...ticket })
+      const data = JSON.parse(response.data)
+
+      if (data.ok) {
+        toast.success('Sucesso', {
+          description: data.mensagem,
+        })
+      } else {
+        toast.error('Erro', {
+          description: data.mensagem,
+        })
+      }
+    } catch (error) {
+      console.error(error)
+    } finally {
+      form.reset()
+      setImageUrl('')
+      setLocalUrl('')
+    }
   }
 
   const fileRef = form.register('image')
@@ -119,7 +151,7 @@ export function SellTicketForm() {
               <div className="space-y-0.5">
                 <FormLabel>Negociável</FormLabel>
                 <FormDescription>
-                  Aceitar ofertas sobre o preço do seu evento
+                  Aceitar ofertas sobre o preço do seu evento.
                 </FormDescription>
               </div>
               <FormControl>

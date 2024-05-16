@@ -13,8 +13,6 @@ export function Home() {
   const fetchTickets = async () => {
     const response = await api.get('/ingressos')
 
-    console.log(JSON.parse(response.data).ingressos)
-
     setTickets(JSON.parse(response.data).ingressos)
   }
   return (

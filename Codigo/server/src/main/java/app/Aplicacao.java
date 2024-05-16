@@ -12,6 +12,7 @@ import static spark.Spark.put;
 import static spark.Spark.staticFiles;
 
 import java.io.File;
+import java.lang.reflect.Type;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +25,6 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import java.lang.reflect.Type;
 
 import dao.CompraDAO;
 import dao.IngressoDAO;
@@ -111,9 +111,13 @@ public class Aplicacao {
         post("/insere_ingresso", (request, response) -> {
             Ingresso ingresso = gson.fromJson(request.body(), Ingresso.class);
 
-            ingressoDAO.insere(ingresso);
+            boolean inserido = ingressoDAO.insere(ingresso);
 
-            return "Ingresso inserido com sucesso!";
+            Map<String, Object> data = new HashMap<>();
+            data.put("mensagem", inserido? "Seu ingresso esta a venda" : "Houve um erro ao vender seu ingresso");
+            data.put("ok", inserido);
+
+            return data;
         }, jsonTransformer);
 
         delete("/deletarIngresso/:id",
