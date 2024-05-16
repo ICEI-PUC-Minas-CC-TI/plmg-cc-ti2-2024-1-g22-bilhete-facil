@@ -92,4 +92,30 @@ public class UsuarioDAO extends DAO { // sempre colocar extends DAO
         }
         return usuario;
     }
+
+     // Método de autenticação
+    public Usuario authenticate(String email, String senha) {
+        Usuario usuario = null;
+        try {
+            String sql = "SELECT * FROM usuario WHERE email = ? AND senha = ?";
+            PreparedStatement ps = conexao.prepareStatement(sql);
+            ps.setString(1, email);
+            ps.setString(2, senha);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                usuario = new Usuario();
+                usuario.setIdUsuario(rs.getInt("idUsuario"));
+                usuario.setNome(rs.getString("nome"));
+                usuario.setEmail(rs.getString("email"));
+                usuario.setIdade(rs.getInt("idade"));
+                usuario.setCpf(rs.getString("cpf"));
+                usuario.setSenha(rs.getString("senha"));
+            }
+            rs.close();
+            ps.close();
+        } catch (Exception e) {
+            System.out.println("Erro ao autenticar usuário: " + e.getMessage());
+        }
+        return usuario;
+    }
 }

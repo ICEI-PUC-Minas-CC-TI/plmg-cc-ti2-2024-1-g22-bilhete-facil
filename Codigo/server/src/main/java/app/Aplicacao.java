@@ -23,6 +23,8 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
 
 import dao.CompraDAO;
 import dao.IngressoDAO;
@@ -72,6 +74,23 @@ public class Aplicacao {
             response.header("Access-Control-Allow-Origin", "*");
         });
 
+        // Rota de autenticação
+        post("/login", (request, response) -> {
+            Type type = new TypeToken<Map<String, String>>() {
+            }.getType();
+            Map<String, String> jsonData = gson.fromJson(request.body(), type);
+            String email = jsonData.get("email");
+            String senha = jsonData.get("senha");
+
+            Usuario usuario = usuarioDAO.authenticate(email, senha);
+            if (usuario != null) {
+                return gson.toJson(usuario);
+            } else {
+                response.status(401);
+                return "Usuário ou senha inválidos!";
+            }
+        });
+
         post("/insere_usuario", (request, response) -> {
             Usuario usuario = gson.fromJson(request.body(), Usuario.class);
             usuarioDAO.insere(usuario);
@@ -92,9 +111,6 @@ public class Aplicacao {
         post("/insere_ingresso", (request, response) -> {
             Ingresso ingresso = gson.fromJson(request.body(), Ingresso.class);
 
-            // String pdfPath = request.queryParams("pdf");
-            // ingresso.setIngressoPdf(pdfPath);
-
             ingressoDAO.insere(ingresso);
 
             return "Ingresso inserido com sucesso!";
@@ -106,9 +122,6 @@ public class Aplicacao {
         put("/updateIngresso/:id", (request, response) -> {
             int id = Integer.parseInt(request.params(":id"));
             Ingresso ingresso = gson.fromJson(request.body(), Ingresso.class);
-
-            // String pdfPath = request.queryParams("pdf");
-            // ingresso.setIngressoPdf(pdfPath);
 
             boolean ingressoAtualizado = ingressoDAO.update(id, ingresso);
 
@@ -137,7 +150,7 @@ public class Aplicacao {
                 compra.setDataCompra(new Timestamp(System.currentTimeMillis()));
                 compra.setPrecoFinal(ingresso.getPreco()); // Use o preço do evento ou outro valor adequado
                 compraDAO.insere(compra);
-                // ingresso.setUsuarioIdUsuario(usuarioId); // Atualiza o ingresso com o ID do novo proprietário
+
                 ingressoDAO.update(ingressoId, ingresso);
                 return "Ingresso comprado com sucesso!";
             } else {
@@ -203,7 +216,7 @@ public class Aplicacao {
                 jsonTransformer);
 
         get("/negociacoes", (request, response) -> {
-            List<Negociacao> negociacoes = negociacaoDAO.getAll();
+            List<Negociacao> negociacoes = negociacaoDAO.getAll(); // ERRADO
             Map<String, Object> data = new HashMap<>();
             data.put("negociacoes", negociacoes);
             return data;
