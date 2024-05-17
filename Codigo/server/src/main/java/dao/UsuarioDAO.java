@@ -1,6 +1,8 @@
 package dao;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 import model.Usuario;
 
@@ -18,14 +20,13 @@ public class UsuarioDAO extends DAO { // sempre colocar extends DAO
     public boolean insere(Usuario usuario) {
         boolean status = false;
         try {
-            String sql = "INSERT INTO usuario (idUsuario, nome, email, idade, cpf, senha) VALUES (?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO usuario (nome, email, idade, cpf, senha) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement ps = conexao.prepareStatement(sql);
-            ps.setInt(1, usuario.getIdUsuario());
-            ps.setString(2, usuario.getNome());
-            ps.setString(3, usuario.getEmail());
-            ps.setInt(4, usuario.getIdade());
-            ps.setString(5, usuario.getCpf());
-            ps.setString(6, usuario.getSenha());
+            ps.setString(1, usuario.getNome());
+            ps.setString(2, usuario.getEmail());
+            ps.setInt(3, usuario.getIdade());
+            ps.setString(4, usuario.getCpf());
+            ps.setString(5, usuario.getSenha());
             ps.executeUpdate();
             ps.close();
             status = true;

@@ -22,14 +22,14 @@ public class IngressoDAO extends DAO {
     public boolean insere(Ingresso ingresso) {
         boolean status = false;
         try {
-            String sql = "INSERT INTO Ingresso (descricao, imagem, preco, negociar, nome) VALUES (?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO Ingresso (descricao, imagem, preco, negociar, nome, idUsuario) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement ps = conexao.prepareStatement(sql);
             ps.setString(1, ingresso.getDescricao());
             ps.setString(2, ingresso.getImagem());
             ps.setDouble(3, ingresso.getPreco());
             ps.setBoolean(4, ingresso.isNegociar());
-            // ps.setInt(5, ingresso.getUsuarioIdUsuario());
             ps.setString(5, ingresso.getNome());
+            ps.setInt(6, ingresso.getUsuarioIdUsuario());
             ps.executeUpdate();
             status = true;
         } catch (Exception e) {
@@ -91,7 +91,7 @@ public class IngressoDAO extends DAO {
                 ingresso.setImagem(rs.getString("imagem"));
                 ingresso.setPreco(rs.getDouble("preco"));
                 ingresso.setNegociar(rs.getBoolean("negociar"));
-                // ingresso.setUsuarioIdUsuario(rs.getInt("Usuario_idUsuario"));
+                ingresso.setUsuarioIdUsuario(rs.getInt("idUsuario"));
             }
             rs.close();
             ps.close();
@@ -115,7 +115,7 @@ public class IngressoDAO extends DAO {
                 ingresso.setImagem(rs.getString("imagem"));
                 ingresso.setPreco(rs.getDouble("preco"));
                 ingresso.setNegociar(rs.getBoolean("negociar"));
-                // ingresso.setUsuarioIdUsuario(rs.getInt("Usuario_idUsuario"));
+                ingresso.setUsuarioIdUsuario(rs.getInt("idUsuario"));
                 ingressos.add(ingresso);
             }
             rs.close();

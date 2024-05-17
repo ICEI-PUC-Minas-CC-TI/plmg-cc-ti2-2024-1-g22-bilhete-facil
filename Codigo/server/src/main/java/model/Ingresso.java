@@ -9,7 +9,7 @@ public class Ingresso {
     private String imagem;
     private double preco;
     private boolean negociar;
-    // private int usuarioIdUsuario;
+    private int idUsuario;
     private String nome;
 
     // Construtor vazio
@@ -17,13 +17,13 @@ public class Ingresso {
     }
 
     // Construtor com parâmetros
-    public Ingresso(int idIngresso, String descricao, String imagem, double preco, boolean negociar, int usuarioIdUsuario) {
+    public Ingresso(int idIngresso, String descricao, String imagem, double preco, boolean negociar, int idUsuario) {
         this.idIngresso = idIngresso;
         this.descricao = descricao;
         this.imagem = imagem;
         this.preco = preco;
         this.negociar = negociar;
-        // this.usuarioIdUsuario = usuarioIdUsuario;
+        this.idUsuario = idUsuario;
     }
 
     // Métodos getters e setters
@@ -75,13 +75,13 @@ public class Ingresso {
         this.negociar = negociar;
     }
 
-    // public int getUsuarioIdUsuario() {
-    //     return usuarioIdUsuario;
-    // }
+    public int getUsuarioIdUsuario() {
+        return idUsuario;
+    }
 
-    // public void setUsuarioIdUsuario(int usuarioIdUsuario) {
-    //     this.usuarioIdUsuario = usuarioIdUsuario;
-    // }
+    public void setUsuarioIdUsuario(int usuarioIdUsuario) {
+        this.idUsuario = usuarioIdUsuario;
+    }
 
     @Override
     public String toString() {
@@ -90,7 +90,7 @@ public class Ingresso {
                 ", descricao='" + descricao + '\'' +
                 ", preco=" + preco +
                 ", negociar=" + negociar +
-                // ", usuarioIdUsuario=" + usuarioIdUsuario +
+                ", usuarioIdUsuario=" + idUsuario +
                 '}';
     }
 }

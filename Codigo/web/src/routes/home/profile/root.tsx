@@ -1,5 +1,5 @@
-import { Separator } from '@/components/ui/separator'
 import { SidebarNav } from '@/components/sidebar-nav'
+import { Separator } from '@/components/ui/separator'
 import { Outlet } from 'react-router-dom'
 
 const sidebarNavItems = [
@@ -14,6 +14,10 @@ const sidebarNavItems = [
   {
     title: 'Vender ingresso',
     href: '/profile/new-ticket',
+  },
+  {
+    title: 'Meus ingressos',
+    href: '/profile/my-tickets',
   },
 ]
 

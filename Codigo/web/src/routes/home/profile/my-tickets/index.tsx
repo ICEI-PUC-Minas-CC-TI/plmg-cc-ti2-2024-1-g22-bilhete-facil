@@ -1,8 +1,8 @@
+import { TicketItem } from '@/components/ticket-item'
 import { api } from '@/lib/api'
 import { getUser } from '@/lib/auth'
 import { Ticket } from '@/shared/interfaces/ticket.interface'
 import { useLoaderData } from 'react-router-dom'
-import { TicketItem } from '../../components/ticket-item'
 
 export async function loader() {
   const user = getUser()
@@ -10,21 +10,18 @@ export async function loader() {
   const data = JSON.parse(response.data)
 
   return data.ingressos.filter(
-    (ticket: Ticket) => ticket.idUsuario !== user.idUsuario,
+    (ticket: Ticket) => ticket.idUsuario === user.idUsuario,
   )
 }
 
-export function Home() {
+export function MyTicketsPage() {
   const tickets = useLoaderData() as Ticket[]
 
   return (
-    <>
-      <h1 className="font-bold text-2xl mb-4">Para você</h1>
-      <main className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {tickets.map((ticket) => (
-          <TicketItem key={ticket.idIngresso} {...ticket} />
-        ))}
-      </main>
-    </>
+    <div className="grid grid-cols-3 gap-4">
+      {tickets.map((ticket) => (
+        <TicketItem key={ticket.idIngresso} {...ticket} />
+      ))}
+    </div>
   )
 }

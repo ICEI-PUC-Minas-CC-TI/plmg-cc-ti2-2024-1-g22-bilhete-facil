@@ -1,6 +1,3 @@
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -10,7 +7,12 @@ import {
   FormLabel,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { api } from '@/lib/api'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
+import { z } from 'zod'
 
 export function LoginForm() {
   const navigate = useNavigate()
@@ -27,10 +29,17 @@ export function LoginForm() {
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    localStorage.setItem('token', 'shhhhh')
-    console.log(values)
-    navigate('/')
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const response = await api.post('/login', {
+        ...values,
+        senha: values.password,
+      })
+      localStorage.setItem('user', response.data)
+      navigate('/')
+    } catch (error) {
+      toast.error(error.response.data)
+    }
   }
 
   return (

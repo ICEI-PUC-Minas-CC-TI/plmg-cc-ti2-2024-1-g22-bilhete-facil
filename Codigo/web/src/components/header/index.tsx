@@ -1,11 +1,12 @@
+import { getUser } from '@/lib/auth'
+import { MagnifyingGlass, Ticket } from '@phosphor-icons/react'
+import { Link } from 'react-router-dom'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
-import { MagnifyingGlass, Ticket } from '@phosphor-icons/react'
 import { UserDropdown } from '../user-dropdown'
-import { Link } from 'react-router-dom'
 
 export function Header() {
-  const isAuthenticated = localStorage.getItem('token')
+  const user = getUser()
   return (
     <header className="max-w-5xl gap-4 px-6 mx-auto flex justify-between items-center py-2">
       <Link
@@ -21,7 +22,7 @@ export function Header() {
           <MagnifyingGlass size={18} />
         </Button>
       </div>
-      {isAuthenticated ? (
+      {user ? (
         <UserDropdown />
       ) : (
         <div className="flex gap-2">

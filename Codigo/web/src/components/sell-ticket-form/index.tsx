@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { api } from '@/lib/api'
+import { getUser } from '@/lib/auth'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -48,6 +49,7 @@ const formSchema = z.object({
 })
 
 export function SellTicketForm() {
+  const user = getUser()
   const [localUrl, setLocalUrl] = useState('')
   const [imageUrl, setImageUrl] = useState('')
   const form = useForm<z.infer<typeof formSchema>>({
@@ -64,6 +66,7 @@ export function SellTicketForm() {
       imagem: imageUrl,
       preco: values.price,
       negociar: values.negotiable,
+      idUsuario: user.idUsuario,
     }
 
     try {

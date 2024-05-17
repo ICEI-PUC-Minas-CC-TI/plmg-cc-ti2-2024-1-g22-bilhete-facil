@@ -1,6 +1,4 @@
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
+import { Button } from '@/components/ui/button'
 import {
   Form,
   FormControl,
@@ -8,9 +6,13 @@ import {
   FormItem,
   FormLabel,
 } from '@/components/ui/form'
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { api } from '@/lib/api'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
+import { z } from 'zod'
 
 export function SignUpForm() {
   const navigate = useNavigate()
@@ -18,6 +20,10 @@ export function SignUpForm() {
     name: z.string(),
     email: z.string().email(),
     password: z.string().min(6),
+    cpf: z.string().length(11),
+    age: z.string().refine((val) => !Number.isNaN(parseInt(val, 10)), {
+      message: 'Expected number, received a string',
+    }),
   })
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -29,10 +35,23 @@ export function SignUpForm() {
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    localStorage.setItem('token', 'shhhhh')
-    console.log(values)
-    navigate('/')
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const usuario = {
+      nome: values.name,
+      email: values.email,
+      idade: values.age,
+      cpf: values.cpf,
+      senha: values.password,
+    }
+
+    const response = await api.post('/insere_usuario', { ...usuario })
+    const data = JSON.parse(response.data)
+
+    if (data.ok) {
+      navigate('/account/login')
+    } else {
+      toast.error(data.message)
+    }
   }
 
   return (
@@ -67,7 +86,7 @@ export function SignUpForm() {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input type="email" placeholder="Your name" {...field} />
+                  <Input type="email" placeholder="john@doe.com" {...field} />
                 </FormControl>
               </FormItem>
             )}
@@ -79,11 +98,41 @@ export function SignUpForm() {
               <FormItem>
                 <FormLabel>Senha</FormLabel>
                 <FormControl>
-                  <Input type="password" placeholder="Your name" {...field} />
+                  <Input type="password" placeholder="Senha" {...field} />
                 </FormControl>
               </FormItem>
             )}
           />
+          <div className="grid grid-cols-3 gap-4">
+            <FormField
+              control={form.control}
+              name="cpf"
+              render={({ field }) => (
+                <FormItem className="col-span-2">
+                  <FormLabel>CPF</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      placeholder="000.000.000-00"
+                      {...field}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="age"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Idade</FormLabel>
+                  <FormControl>
+                    <Input type="number" placeholder="Idade" {...field} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+          </div>
           <Button className="w-full" type="submit">
             Cadastrar
           </Button>

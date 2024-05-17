@@ -5,19 +5,23 @@ import {
   LoaderFunction,
   RouterProvider,
 } from 'react-router-dom'
-import './index.css'
-import { Home } from './routes/home'
-import { Root } from './routes/home/root'
-import { Item, loader as itemLoader } from './routes/home/item'
-import { ProfilePage } from './routes/home/profile/my'
-import { ProfileRoot } from './routes/home/profile/root'
-import { CartPage } from './routes/home/profile/cart'
-import { NewTicketPage } from './routes/home/profile/new-ticket'
 import { Toaster } from './components/ui/sonner'
-import { CheckoutPage } from './routes/checkout'
+import './index.css'
 import { AccountRoot } from './routes/account/root'
-import { SignUpForm } from './routes/account/signup'
 import { LoginForm } from './routes/account/signin'
+import { SignUpForm } from './routes/account/signup'
+import { CheckoutPage } from './routes/checkout'
+import { Home, loader as homeLoader } from './routes/home'
+import { Item, loader as itemLoader } from './routes/home/item'
+import { CartPage } from './routes/home/profile/cart'
+import { ProfilePage } from './routes/home/profile/my'
+import {
+  loader as myTicketsLoader,
+  MyTicketsPage,
+} from './routes/home/profile/my-tickets'
+import { NewTicketPage } from './routes/home/profile/new-ticket'
+import { ProfileRoot } from './routes/home/profile/root'
+import { Root } from './routes/home/root'
 import { ProtectedRoute } from './routes/protect-route'
 
 const router = createBrowserRouter([
@@ -25,7 +29,11 @@ const router = createBrowserRouter([
     path: '/',
     element: <Root />,
     children: [
-      { path: '', element: <Home /> },
+      {
+        path: '',
+        element: <Home />,
+        loader: homeLoader as unknown as LoaderFunction,
+      },
       {
         path: 'item/:id',
         element: <Item />,
@@ -50,6 +58,11 @@ const router = createBrowserRouter([
               {
                 path: 'new-ticket',
                 element: <NewTicketPage />,
+              },
+              {
+                path: 'my-tickets',
+                element: <MyTicketsPage />,
+                loader: myTicketsLoader as unknown as LoaderFunction,
               },
             ],
           },

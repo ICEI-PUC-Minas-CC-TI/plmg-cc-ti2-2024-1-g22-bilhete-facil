@@ -4,4 +4,5 @@ export interface Ticket {
   descricao: string
   preco: number
   imagem: string
+  idUsuario: number
 }

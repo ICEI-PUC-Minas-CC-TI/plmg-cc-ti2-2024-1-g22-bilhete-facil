@@ -93,8 +93,13 @@ public class Aplicacao {
 
         post("/insere_usuario", (request, response) -> {
             Usuario usuario = gson.fromJson(request.body(), Usuario.class);
-            usuarioDAO.insere(usuario);
-            return "Usuario inserido com sucesso!";
+            boolean inserido = usuarioDAO.insere(usuario);
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("mensagem", inserido? "Usuario cadastrado" : "Usuario não pode ser cadastrado");
+            data.put("ok", inserido);
+
+            return data;
         }, jsonTransformer);
 
         delete("/deleteUsuario/:id", (request, response) -> usuarioDAO.delete(Integer.parseInt(request.params(":id"))));
