@@ -125,8 +125,14 @@ public class Aplicacao {
             return data;
         }, jsonTransformer);
 
-        delete("/deletarIngresso/:id",
-                (request, response) -> ingressoDAO.delete(Integer.parseInt(request.params(":id"))));
+        delete("/deletarIngresso/:id", (request, response) -> {
+            boolean deletado = ingressoDAO.delete(Integer.parseInt(request.params(":id")));
+            Map<String, Object> data = new HashMap<>();
+            data.put("mensagem", deletado? "Ingresso deletado" : "Erro ao deletar ingresso");
+            data.put("ok", deletado);
+
+            return data;
+        }, jsonTransformer);
 
         put("/updateIngresso/:id", (request, response) -> {
             int id = Integer.parseInt(request.params(":id"));
@@ -134,7 +140,11 @@ public class Aplicacao {
 
             boolean ingressoAtualizado = ingressoDAO.update(id, ingresso);
 
-            return ingressoAtualizado ? "Ingresso atualizado com sucesso!" : "Erro ao atualizar ingresso.";
+            Map<String, Object> data = new HashMap<>();
+            data.put("mensagem", ingressoAtualizado? "Ingresso atualizado" : "Erro ao atualizar ingresso");
+            data.put("ok", ingressoAtualizado);
+
+            return data;
         }, jsonTransformer);
 
         get("/ingressos/:id", (request, response) -> ingressoDAO.getById(Integer.parseInt(request.params(":id"))),

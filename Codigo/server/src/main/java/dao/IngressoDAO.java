@@ -54,26 +54,19 @@ public class IngressoDAO extends DAO {
     }
 
     public boolean update(int idIngresso, Ingresso ingresso) {
-        boolean status = false;
         try {
-            String sql = "UPDATE Ingresso SET descricao=?, imagem=?, preco=?, negociar=?, Usuario_idUsuario=?, nome=? WHERE idIngresso=?";
+            String sql = "UPDATE Ingresso SET descricao=?, preco=?, nome=? WHERE idIngresso=?";
             PreparedStatement ps = conexao.prepareStatement(sql);
             ps.setString(1, ingresso.getDescricao());
-            ps.setString(2, ingresso.getImagem());
-            ps.setDouble(3, ingresso.getPreco());
-            ps.setBoolean(4, ingresso.isNegociar());
-            // ps.setInt(5, ingresso.getUsuarioIdUsuario());
-            ps.setInt(6, idIngresso);
-            ps.setString(7, ingresso.getNome());
-            int ver = ps.executeUpdate();
-            ps.close();
-            if (ver > 0) {
-                status = true;
-            }
+            ps.setDouble(2, ingresso.getPreco());
+            ps.setString(3, ingresso.getNome());
+            ps.setInt(4, idIngresso);
+            int rs = ps.executeUpdate();
+            return rs > 0;
         } catch (Exception e) {
             System.out.println("Erro ao atualizar ingresso: " + e.getMessage());
+            return false;
         }
-        return status;
     }
 
     public Ingresso getById(int idIngresso) {
