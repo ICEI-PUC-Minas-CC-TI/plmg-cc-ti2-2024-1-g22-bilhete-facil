@@ -6,9 +6,13 @@ import { TicketItem } from '../../components/ticket-item'
 
 export async function loader() {
   const user = getUser()
+
   const response = await api.get(`/ingressos`)
   const data = JSON.parse(response.data)
 
+  if (!user) {
+    return data.ingressos
+  }
   return data.ingressos.filter(
     (ticket: Ticket) => ticket.idUsuario !== user.idUsuario,
   )

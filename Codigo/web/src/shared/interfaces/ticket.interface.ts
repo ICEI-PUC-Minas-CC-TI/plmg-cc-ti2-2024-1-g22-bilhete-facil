@@ -5,4 +5,5 @@ export interface Ticket {
   preco: number
   imagem: string
   idUsuario: number
+  negociar: boolean
 }

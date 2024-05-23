@@ -1,12 +1,12 @@
-import { CartItem } from '@/components/cart-item'
 import { CardForm } from '@/components/card-form'
+import { CartItem } from '@/components/cart-item'
+import { PixForm } from '@/components/pix-form'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
-import { CaretLeft } from '@phosphor-icons/react'
-import { Link } from 'react-router-dom'
 import { cn } from '@/lib/utils'
+import { CaretLeft } from '@phosphor-icons/react'
 import { useState } from 'react'
-import { PixForm } from '@/components/pix-form'
+import { Link } from 'react-router-dom'
 
 export function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'pix'>('card')
@@ -26,8 +26,7 @@ export function CheckoutPage() {
       <h1 className="text-2xl font-bold mb-4">Finalizar Compra</h1>
       <div className="space-y-4">
         <div className="space-y-4">
-          <CartItem showQuantityInput={false} />
-          <CartItem showQuantityInput={false} />
+          <CartItem />
         </div>
         <Separator orientation="horizontal" />
         <div className="border border-border grid grid-cols-2 sm:grid-cols-3 p-4 rounded-md gap-4 items-start">
@@ -61,7 +60,7 @@ export function CheckoutPage() {
             <div className="space-y-2">
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Subtotal</span>
-                <strong>R$ 460,00</strong>
+                <strong>R$ 230,00</strong>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Taxa</span>
@@ -78,7 +77,7 @@ export function CheckoutPage() {
             />
             <div className="flex justify-between">
               <span className="text-muted-foreground">Total</span>
-              <strong>R$ 460,00</strong>
+              <strong>R$ 230,00</strong>
             </div>
           </div>
         </div>

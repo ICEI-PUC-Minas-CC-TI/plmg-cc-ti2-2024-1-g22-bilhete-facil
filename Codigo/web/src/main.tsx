@@ -13,7 +13,6 @@ import { SignUpForm } from './routes/account/signup'
 import { CheckoutPage } from './routes/checkout'
 import { Home, loader as homeLoader } from './routes/home'
 import { Item, loader as itemLoader } from './routes/home/item'
-import { CartPage } from './routes/home/profile/cart'
 import { ProfilePage } from './routes/home/profile/my'
 import {
   loader as myTicketsLoader,
@@ -50,10 +49,6 @@ const router = createBrowserRouter([
               {
                 path: 'me',
                 element: <ProfilePage />,
-              },
-              {
-                path: 'cart',
-                element: <CartPage />,
               },
               {
                 path: 'new-ticket',

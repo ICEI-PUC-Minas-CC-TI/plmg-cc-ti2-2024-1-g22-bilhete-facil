@@ -68,11 +68,7 @@ export function CardForm() {
               <FormItem className="col-start-1 col-end-3">
                 <FormLabel>Data de validade</FormLabel>
                 <FormControl>
-                  <Input
-                    type="text"
-                    placeholder="Descrição do evento..."
-                    {...field}
-                  />
+                  <Input type="text" placeholder="00/00" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

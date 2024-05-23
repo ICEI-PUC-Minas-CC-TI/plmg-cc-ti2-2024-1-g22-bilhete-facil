@@ -8,10 +8,6 @@ const sidebarNavItems = [
     href: '/profile/me',
   },
   {
-    title: 'Carrinho',
-    href: '/profile/cart',
-  },
-  {
     title: 'Vender ingresso',
     href: '/profile/new-ticket',
   },

@@ -1,11 +1,5 @@
 import { getUser } from '@/lib/auth'
-import {
-  CurrencyDollar,
-  ShoppingCart,
-  SignOut,
-  Ticket,
-  User,
-} from '@phosphor-icons/react'
+import { CurrencyDollar, SignOut, Ticket, User } from '@phosphor-icons/react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import {
@@ -54,12 +48,6 @@ export function UserDropdown() {
             <Link to="/profile/me" className="flex items-center gap-2">
               <User className="h-5 w-5" />
               Meu Perfil
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link to="/profile/cart" className="flex items-center gap-2">
-              <ShoppingCart className="h-5 w-5" />
-              Carrinho
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>

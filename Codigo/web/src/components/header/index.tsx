@@ -16,9 +16,9 @@ export function Header() {
         <Ticket className="-rotate-45" size={24} />
         <span className="hidden sm:inline">BilheteFacil</span>
       </Link>
-      <div className="flex gap-2 items-center max-w-xs w-full">
+      <div className="flex gap-2 max-w-xs w-full">
         <Input type="text" placeholder="Evento..." />
-        <Button className="aspect-square" size="icon">
+        <Button className="w-12" size="icon">
           <MagnifyingGlass size={18} />
         </Button>
       </div>

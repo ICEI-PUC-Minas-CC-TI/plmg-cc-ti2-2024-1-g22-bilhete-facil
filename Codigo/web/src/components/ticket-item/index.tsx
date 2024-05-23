@@ -2,7 +2,7 @@ import { api } from '@/lib/api'
 import { getUser } from '@/lib/auth'
 import { formatCurrency } from '@/lib/utils'
 import { Ticket } from '@/shared/interfaces/ticket.interface'
-import { Pencil, ShoppingCart, Trash } from '@phosphor-icons/react'
+import { Pencil, Trash } from '@phosphor-icons/react'
 import axios from 'axios'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -14,9 +14,6 @@ export function TicketItem(ticket: Ticket) {
   const [isDeleted, setIsDeleted] = useState(false)
   const [initialData, setInitialData] = useState<Ticket>(ticket)
   const user = getUser()
-  function handleAddToCart() {
-    toast('Ingresso adicionado ao carrinho')
-  }
 
   function updateInitialData(ticket: Ticket) {
     setInitialData(ticket)
@@ -47,7 +44,7 @@ export function TicketItem(ticket: Ticket) {
 
   return (
     <div className="space-y-2 relative cursor-pointer">
-      {user.idUsuario === ticket.idUsuario ? (
+      {user && user.idUsuario === ticket.idUsuario && (
         <div className="flex gap-2 absolute top-2 right-2 z-10">
           <UpdateTicketFormModal
             initialData={initialData}
@@ -61,14 +58,6 @@ export function TicketItem(ticket: Ticket) {
             <Trash size={18} />
           </Button>
         </div>
-      ) : (
-        <Button
-          onClick={handleAddToCart}
-          className="absolute top-2 right-2 z-10"
-          size="icon"
-        >
-          <ShoppingCart size={18} />
-        </Button>
       )}
       <Link to={`/item/${initialData.idIngresso}`} className="group">
         <div className="rounded-md overflow-hidden">
