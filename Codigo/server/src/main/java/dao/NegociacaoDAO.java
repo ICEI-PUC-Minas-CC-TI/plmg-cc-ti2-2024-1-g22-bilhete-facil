@@ -1,6 +1,8 @@
 package dao;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,15 +20,15 @@ public class NegociacaoDAO extends DAO {
     }
 
     public boolean insere(Negociacao negociacao) {
+        System.out.println(negociacao.getIngressoIdIngresso());
         boolean status = false;
         try {
-            String sql = "INSERT INTO negociacao (idNegociacao, Ingresso_idIngresso, Usuario_idUsuario, PrecoOferecido, Status) VALUES (?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO negociacao (idIngresso, idUsuario, PrecoOferecido, Status) VALUES (?, ?, ?, ?)";
             PreparedStatement ps = conexao.prepareStatement(sql);
-            ps.setInt(1, negociacao.getIdNegociacao());
-            ps.setInt(2, negociacao.getIngressoIdIngresso());
-            ps.setInt(3, negociacao.getUsuarioIdUsuario());
-            ps.setDouble(4, negociacao.getPrecoOferecido());
-            ps.setString(5, negociacao.getStatus());
+            ps.setInt(1, negociacao.getIngressoIdIngresso());
+            ps.setInt(2, negociacao.getUsuarioIdUsuario());
+            ps.setDouble(3, negociacao.getPrecoOferecido());
+            ps.setString(4, negociacao.getStatus());
             ps.executeUpdate();
             status = true;
         } catch (Exception e) {
@@ -100,8 +102,8 @@ public class NegociacaoDAO extends DAO {
             while (rs.next()) {
                 Negociacao negociacao = new Negociacao();
                 negociacao.setIdNegociacao(rs.getInt("idNegociacao"));
-                negociacao.setIngressoIdIngresso(rs.getInt("Ingresso_idIngresso"));
-                negociacao.setUsuarioIdUsuario(rs.getInt("Usuario_idUsuario"));
+                negociacao.setIngressoIdIngresso(rs.getInt("idIngresso"));
+                negociacao.setUsuarioIdUsuario(rs.getInt("idUsuario"));
                 negociacao.setPrecoOferecido(rs.getDouble("PrecoOferecido"));
                 negociacao.setStatus(rs.getString("Status"));
                 negociacoes.add(negociacao);

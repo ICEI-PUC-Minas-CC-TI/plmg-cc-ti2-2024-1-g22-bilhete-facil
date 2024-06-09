@@ -18,6 +18,10 @@ import {
   loader as myTicketsLoader,
   MyTicketsPage,
 } from './routes/home/profile/my-tickets'
+import {
+  loader as negotiationsLoader,
+  NegotioationsPage,
+} from './routes/home/profile/negotiations'
 import { NewTicketPage } from './routes/home/profile/new-ticket'
 import { ProfileRoot } from './routes/home/profile/root'
 import { Root } from './routes/home/root'
@@ -58,6 +62,11 @@ const router = createBrowserRouter([
                 path: 'my-tickets',
                 element: <MyTicketsPage />,
                 loader: myTicketsLoader as unknown as LoaderFunction,
+              },
+              {
+                path: 'negotiations',
+                element: <NegotioationsPage />,
+                loader: negotiationsLoader as unknown as LoaderFunction,
               },
             ],
           },

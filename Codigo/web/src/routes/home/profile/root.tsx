@@ -15,6 +15,10 @@ const sidebarNavItems = [
     title: 'Meus ingressos',
     href: '/profile/my-tickets',
   },
+  {
+    title: 'Negociações',
+    href: '/profile/negotiations',
+  },
 ]
 
 export function ProfileRoot() {
