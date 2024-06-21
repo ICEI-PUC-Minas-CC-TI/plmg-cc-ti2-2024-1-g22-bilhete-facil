@@ -2,15 +2,15 @@ import { api } from '@/lib/api'
 import { formatCurrency } from '@/lib/utils'
 import { Negotiation } from '@/shared/interfaces/negotiation.interface'
 import { Ticket } from '@/shared/interfaces/ticket.interface'
+import { Trash } from '@phosphor-icons/react'
 import { TooltipProvider } from '@radix-ui/react-tooltip'
+import axios from 'axios'
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { toast } from 'sonner'
 import { TicketItem } from '../ticket-item'
 import { Button } from '../ui/button'
-import { Input } from '../ui/input'
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip'
-import { Trash } from '@phosphor-icons/react'
-import { toast } from 'sonner'
-import axios from 'axios'
 
 interface NegotiationProps {
   negotiation: Negotiation
@@ -76,12 +76,14 @@ export function NegotiationItem({ negotiation }: NegotiationProps) {
             {formatCurrency(negotiation.precoOferecido)}
           </span>
           <div className="flex gap-2">
-            <Button
-              className="flex-1"
-              disabled={negotiation.status !== 'aceito'}
-            >
-              Comprar
-            </Button>
+            <Link to={`/checkout/${ticket.idIngresso}`}>
+              <Button
+                className="flex-1"
+                disabled={negotiation.status !== 'aceito'}
+              >
+                Comprar
+              </Button>
+            </Link>
             <Button
               onClick={() => handleDeleteNegotiation(negotiation.idNegociacao)}
               variant="destructive"

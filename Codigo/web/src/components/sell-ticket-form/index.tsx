@@ -65,7 +65,6 @@ export function SellTicketForm() {
   const [localUrl, setLocalUrl] = useState('')
   const [imageUrl, setImageUrl] = useState('')
   const [pdfUrl, setPdfUrl] = useState('')
-  const [pdfPath, setPdfPath] = useState('')
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -80,7 +79,6 @@ export function SellTicketForm() {
     }
 
     setPdfUrl('')
-    setPdfPath('')
 
     const formData = new FormData()
 
@@ -94,7 +92,6 @@ export function SellTicketForm() {
       const response = await api.post('/uploadPdf', formData, config)
       const data = JSON.parse(response.data)
       setPdfUrl(data.url)
-      setPdfPath(data.path)
     } catch (error) {
       console.error(error)
     }
@@ -112,6 +109,26 @@ export function SellTicketForm() {
     }
 
     try {
+      const responseStatusPdf = await fetch(
+        'http://localhost:5000/receive_pdf',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ url: pdfUrl, title: values.event }),
+        },
+      )
+
+      const pdfData = await responseStatusPdf.json()
+
+      if (pdfData.status === 'error') {
+        toast.error('Erro', {
+          description: pdfData.message,
+        })
+        return
+      }
+
       const response = await api.post('/insere_ingresso', { ...ticket })
       const data = JSON.parse(response.data)
 
