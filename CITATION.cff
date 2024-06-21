@@ -2,30 +2,29 @@ cff-version: 1.0.1
 message: Please cite this software using these metadata.
 title: 
 authors:
-  - family-names: 
-    given-names: 
-  - family-names: 
-    given-names: 
-  - family-names: 
-    given-names: 
-  - family-names: 
-    given-names: 
-  - family-names: 
-    given-names: 
-  - family-names: 
-    given-names:
+  - family-names: Azevedo junqueira de carvalho
+    given-names: Felipe 
+  - family-names: Tamietti Mauro
+    given-names: Gabriel 
+  - family-names: Marques de Souza Rocha
+    given-names: Rodrigo 
+  - family-names: de Freitas Fornazier
+    given-names: Rodrigo 
+  - family-names: Barroso de Rezende
+    given-names: Thiago
   - name-suffix: Professor
     affiliation: PUC Minas
-    family-names: 
-    given-names: 
+    family-names: Cardoso Brandao
+    given-names: Wladimir
   - name-suffix: Professor
     affiliation: PUC Minas
-    family-names: 
-    given-names: 
+    family-names: Soares Gomes
+    given-names: Marco Paulo
 keywords:
-  - 
-  - 
-repository-code: 
+  - Ingressos
+  - Eventos
+  - Sistema Inteligente
+repository-code: https://github.com/ICEI-PUC-Minas-CC-TI/plmg-cc-ti2-2024-1-g22-bilhete-facil
 license: CC-BY-4.0
 version: 1.0.0
-date-released: 2022-07-14
+date-released: 2024-06-21
