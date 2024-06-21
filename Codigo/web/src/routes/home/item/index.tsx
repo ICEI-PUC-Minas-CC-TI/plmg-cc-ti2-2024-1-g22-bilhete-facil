@@ -41,7 +41,10 @@ export function Item() {
             <Link className="flex-1" to="/checkout">
               <Button className="w-full">Comprar</Button>
             </Link>
-            <NegotiationForm disabled={!ticket.negociar} />
+            <NegotiationForm
+              idIngresso={ticket.idIngresso}
+              disabled={!ticket.negociar}
+            />
           </div>
         </div>
       </div>

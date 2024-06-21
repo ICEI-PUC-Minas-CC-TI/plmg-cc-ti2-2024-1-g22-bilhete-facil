@@ -96,7 +96,7 @@ public class Aplicacao {
             boolean inserido = usuarioDAO.insere(usuario);
 
             Map<String, Object> data = new HashMap<>();
-            data.put("mensagem", inserido? "Usuario cadastrado" : "Usuario não pode ser cadastrado");
+            data.put("mensagem", inserido ? "Usuario cadastrado" : "Usuario não pode ser cadastrado");
             data.put("ok", inserido);
 
             return data;
@@ -111,7 +111,8 @@ public class Aplicacao {
             return "Usuario atualizado com sucesso!";
         }, jsonTransformer);
 
-        get("/usuario/:id", (request, response) -> usuarioDAO.getUsuario(Integer.parseInt(request.params(":id"))));
+        get("/usuario/:id", (request, response) -> usuarioDAO.getUsuario(Integer.parseInt(request.params(":id"))),
+                jsonTransformer);
 
         post("/insere_ingresso", (request, response) -> {
             Ingresso ingresso = gson.fromJson(request.body(), Ingresso.class);
@@ -119,7 +120,7 @@ public class Aplicacao {
             boolean inserido = ingressoDAO.insere(ingresso);
 
             Map<String, Object> data = new HashMap<>();
-            data.put("mensagem", inserido? "Seu ingresso esta a venda" : "Houve um erro ao vender seu ingresso");
+            data.put("mensagem", inserido ? "Seu ingresso esta a venda" : "Houve um erro ao vender seu ingresso");
             data.put("ok", inserido);
 
             return data;
@@ -128,7 +129,7 @@ public class Aplicacao {
         delete("/deletarIngresso/:id", (request, response) -> {
             boolean deletado = ingressoDAO.delete(Integer.parseInt(request.params(":id")));
             Map<String, Object> data = new HashMap<>();
-            data.put("mensagem", deletado? "Ingresso deletado" : "Erro ao deletar ingresso");
+            data.put("mensagem", deletado ? "Ingresso deletado" : "Erro ao deletar ingresso");
             data.put("ok", deletado);
 
             return data;
@@ -141,7 +142,7 @@ public class Aplicacao {
             boolean ingressoAtualizado = ingressoDAO.update(id, ingresso);
 
             Map<String, Object> data = new HashMap<>();
-            data.put("mensagem", ingressoAtualizado? "Ingresso atualizado" : "Erro ao atualizar ingresso");
+            data.put("mensagem", ingressoAtualizado ? "Ingresso atualizado" : "Erro ao atualizar ingresso");
             data.put("ok", ingressoAtualizado);
 
             return data;
@@ -217,25 +218,47 @@ public class Aplicacao {
 
         post("/insere_negociacao", (request, response) -> {
             Negociacao negociacao = gson.fromJson(request.body(), Negociacao.class);
-            negociacaoDAO.insere(negociacao);
-            return "Negociação inserida com sucesso!";
+            boolean inserido = negociacaoDAO.insere(negociacao);
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("mensagem", inserido ? "Ingresso atualizado" : "Erro ao atualizar ingresso");
+            data.put("ok", inserido);
+
+            return data;
         }, jsonTransformer);
 
         delete("/deletarNegociacao/:id",
-                (request, response) -> negociacaoDAO.delete(Integer.parseInt(request.params(":id"))));
+                (request, response) -> {
+                    boolean deletado = negociacaoDAO.delete(Integer.parseInt(request.params(":id")));
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("mensagem", deletado ? "Negociação deletada" : "Erro ao deletar negociação");
+                    data.put("ok", deletado);
+
+                    return data;
+                });
 
         put("/updateNegociacao/:id", (request, response) -> {
             int id = Integer.parseInt(request.params(":id"));
             Negociacao negociacao = gson.fromJson(request.body(), Negociacao.class);
             boolean negociacaoAtualizada = negociacaoDAO.update(id, negociacao);
-            return negociacaoAtualizada ? "Negociação atualizada com sucesso!" : "Erro ao atualizar negociação.";
+            if (negociacao.getStatus().equals("aceito")) {
+                Ingresso ingresso = ingressoDAO.getById(negociacao.getIngressoIdIngresso());
+                ingresso.setPreco(negociacao.getPrecoOferecido());
+
+                ingressoDAO.update(negociacao.getIngressoIdIngresso(), ingresso);
+            }
+            Map<String, Object> data = new HashMap<>();
+            data.put("ok", negociacaoAtualizada);
+            data.put("mensagem",
+                    negociacaoAtualizada ? "Negociação atualizada com sucesso!" : "Erro ao atualizar negociação.");
+            return data;
         }, jsonTransformer);
 
         get("/negociacao/:id", (request, response) -> negociacaoDAO.getById(Integer.parseInt(request.params(":id"))),
                 jsonTransformer);
 
         get("/negociacoes", (request, response) -> {
-            List<Negociacao> negociacoes = negociacaoDAO.getAll(); // ERRADO
+            List<Negociacao> negociacoes = NegociacaoDAO.getAll(); // ERRADO
             Map<String, Object> data = new HashMap<>();
             data.put("negociacoes", negociacoes);
             return data;

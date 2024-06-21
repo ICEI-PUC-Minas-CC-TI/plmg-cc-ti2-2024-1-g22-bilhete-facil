@@ -2,13 +2,15 @@ import { api } from '@/lib/api'
 import { formatCurrency } from '@/lib/utils'
 import { Negotiation } from '@/shared/interfaces/negotiation.interface'
 import { Ticket } from '@/shared/interfaces/ticket.interface'
-import { X } from '@phosphor-icons/react/dist/ssr'
 import { TooltipProvider } from '@radix-ui/react-tooltip'
 import { useEffect, useState } from 'react'
 import { TicketItem } from '../ticket-item'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip'
+import { Trash } from '@phosphor-icons/react'
+import { toast } from 'sonner'
+import axios from 'axios'
 
 interface NegotiationProps {
   negotiation: Negotiation
@@ -26,6 +28,22 @@ export function NegotiationItem({ negotiation }: NegotiationProps) {
     }
     loadTicket()
   }, [negotiation])
+
+  function handleDeleteNegotiation(idNegociacao: number) {
+    try {
+      api.delete(`/deletarNegociacao/${idNegociacao}`)
+
+      // Remove the deleted negotiation from the UI
+      setTicket(undefined)
+      toast('Negociação deletada')
+    } catch (error) {
+      console.log(error)
+
+      if (axios.isAxiosError(error) && error.response?.data?.message) {
+        toast.error(error.response?.data?.message)
+      }
+    }
+  }
 
   if (!ticket) {
     return null
@@ -58,16 +76,21 @@ export function NegotiationItem({ negotiation }: NegotiationProps) {
             {formatCurrency(negotiation.precoOferecido)}
           </span>
           <div className="flex gap-2">
-            <div className="flex-1 flex gap-2">
-              <Input />
-              <Button>Renegociar</Button>
-            </div>
-            <Button variant="destructive" size="icon">
-              <X weight="bold" />
+            <Button
+              className="flex-1"
+              disabled={negotiation.status !== 'aceito'}
+            >
+              Comprar
+            </Button>
+            <Button
+              onClick={() => handleDeleteNegotiation(negotiation.idNegociacao)}
+              variant="destructive"
+              size="icon"
+            >
+              <Trash weight="bold" />
             </Button>
           </div>
         </div>
-        <Button disabled={negotiation.status !== 'aceito'}>Comprar</Button>
       </div>
     </div>
   )

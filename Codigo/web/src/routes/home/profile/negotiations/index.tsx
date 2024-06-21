@@ -12,7 +12,7 @@ export async function loader() {
 
   return data.negociacoes.filter(
     (negotiation: Negotiation) =>
-      negotiation.usuarioIdUsuario !== user.idUsuario,
+      negotiation.usuarioIdUsuario === user.idUsuario,
   )
 }
 
@@ -28,12 +28,14 @@ export function NegotioationsPage() {
         </span>
       </header>
       <Separator />
-      {negotiations.map((negotiation) => (
-        <NegotiationItem
-          key={negotiation.idNegociacao}
-          negotiation={negotiation}
-        />
-      ))}
+      <div className="space-y-8">
+        {negotiations.map((negotiation) => (
+          <NegotiationItem
+            key={negotiation.idNegociacao}
+            negotiation={negotiation}
+          />
+        ))}
+      </div>
     </div>
   )
 }

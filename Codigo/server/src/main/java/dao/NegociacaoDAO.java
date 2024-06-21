@@ -55,7 +55,8 @@ public class NegociacaoDAO extends DAO {
     public boolean update(int idNegociacao, Negociacao negociacao) {
         boolean status = false;
         try {
-            PreparedStatement ps = conexao.prepareStatement("UPDATE negociacao SET Ingresso_idIngresso=?, Usuario_idUsuario=?, PrecoOferecido=?, Status=? WHERE idNegociacao=?");
+            PreparedStatement ps = conexao.prepareStatement(
+                    "UPDATE negociacao SET idIngresso=?, idUsuario=?, PrecoOferecido=?, Status=? WHERE idNegociacao=?");
             ps.setInt(1, negociacao.getIngressoIdIngresso());
             ps.setInt(2, negociacao.getUsuarioIdUsuario());
             ps.setDouble(3, negociacao.getPrecoOferecido());
