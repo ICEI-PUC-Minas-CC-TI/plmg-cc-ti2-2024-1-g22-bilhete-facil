@@ -38,7 +38,7 @@ export function Item() {
           </div>
           <div className="flex flex-col gap-4">
             <strong className="text-2xl">{formatCurrency(ticket.preco)}</strong>
-            <Link className="flex-1" to="/checkout">
+            <Link className="flex-1" to={`/checkout/${ticket.idIngresso}`}>
               <Button className="w-full">Comprar</Button>
             </Link>
             <NegotiationForm

@@ -108,6 +108,7 @@ export function SellTicketForm() {
       preco: values.price,
       negociar: values.negotiable,
       idUsuario: user.idUsuario,
+      pdf: pdfUrl,
     }
 
     try {

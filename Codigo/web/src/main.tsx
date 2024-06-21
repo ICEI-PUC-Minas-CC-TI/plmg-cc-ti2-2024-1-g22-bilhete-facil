@@ -10,7 +10,7 @@ import './index.css'
 import { AccountRoot } from './routes/account/root'
 import { LoginForm } from './routes/account/signin'
 import { SignUpForm } from './routes/account/signup'
-import { CheckoutPage } from './routes/checkout'
+import { loader as checkoutLoader, CheckoutPage } from './routes/checkout'
 import { Home, loader as homeLoader } from './routes/home'
 import { Item, loader as itemLoader } from './routes/home/item'
 import { ProfilePage } from './routes/home/profile/my'
@@ -75,12 +75,13 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: '/checkout',
+    path: '/checkout/:id',
     element: <ProtectedRoute />,
     children: [
       {
         path: '',
         element: <CheckoutPage />,
+        loader: checkoutLoader as unknown as LoaderFunction,
       },
     ],
   },

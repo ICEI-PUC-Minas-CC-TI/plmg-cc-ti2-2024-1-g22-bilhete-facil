@@ -7,6 +7,7 @@ public class Ingresso {
     private int idIngresso;
     private String descricao;
     private String imagem;
+    private String pdf;
     private double preco;
     private boolean negociar;
     private int idUsuario;
@@ -17,13 +18,14 @@ public class Ingresso {
     }
 
     // Construtor com parâmetros
-    public Ingresso(int idIngresso, String descricao, String imagem, double preco, boolean negociar, int idUsuario) {
+    public Ingresso(int idIngresso, String descricao, String imagem, double preco, boolean negociar, int idUsuario, String pdf) {
         this.idIngresso = idIngresso;
         this.descricao = descricao;
         this.imagem = imagem;
         this.preco = preco;
         this.negociar = negociar;
         this.idUsuario = idUsuario;
+        this.pdf = pdf;
     }
 
     // Métodos getters e setters
@@ -57,6 +59,14 @@ public class Ingresso {
 
     public void setImagem(String imagem) {
         this.imagem = imagem;
+    }
+
+    public String getPdf() {
+      return pdf;
+    }
+
+    public void setPdf(String pdf) {
+      this.pdf = pdf;
     }
 
     public double getPreco() {

@@ -6,4 +6,5 @@ export interface Ticket {
   imagem: string
   idUsuario: number
   negociar: boolean
+  pdf: string
 }

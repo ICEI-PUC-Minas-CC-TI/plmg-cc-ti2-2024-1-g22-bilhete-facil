@@ -1,6 +1,12 @@
-import img from '../../assets/event.jpg'
+import { formatCurrency } from '@/lib/utils'
 
-export function CartItem() {
+interface CartItemProps {
+  img: string
+  name: string
+  price: number
+}
+
+export function CartItem({ img, name, price }: CartItemProps) {
   return (
     <div className="block space-y-2 sm:flex justify-between flex-wrap gap-4">
       <div className="flex gap-2">
@@ -10,9 +16,8 @@ export function CartItem() {
           alt=""
         />
         <div className="">
-          <strong className="text-lg block">Show Kanye West</strong>
-          <time className="text-muted-foreground block">10/12/2024</time>
-          <span className="text-right mt-auto">R$ 230,00</span>
+          <strong className="text-lg block">{name}</strong>
+          <span className="text-right mt-auto">{formatCurrency(price)}</span>
         </div>
       </div>
     </div>

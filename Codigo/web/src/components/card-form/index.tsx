@@ -16,16 +16,23 @@ const formSchema = z.object({
   card_number: z.string().min(2).max(50),
   card_name: z.string(),
   expire_date: z.string(),
-  cvc: z.number().min(100).max(9999),
+  cvc: z.string().refine((val) => !Number.isNaN(parseInt(val, 10)), {
+    message: 'Expected number, received a string',
+  }),
 })
 
-export function CardForm() {
+interface CardFormProps {
+  ticketURL: string
+}
+
+export function CardForm({ ticketURL }: CardFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values)
+    window.location.href = `http://localhost:6789/pdfs/${ticketURL}`
   }
 
   return (
