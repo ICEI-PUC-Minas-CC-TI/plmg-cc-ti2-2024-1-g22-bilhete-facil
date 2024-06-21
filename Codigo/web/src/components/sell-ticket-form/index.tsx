@@ -12,7 +12,8 @@ import { Input } from '@/components/ui/input'
 import { api } from '@/lib/api'
 import { getUser } from '@/lib/auth'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useState } from 'react'
+import { AxiosRequestConfig } from 'axios'
+import { ChangeEvent, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import * as z from 'zod'
@@ -34,6 +35,17 @@ const formSchema = z.object({
   price: z.string().refine((val) => !Number.isNaN(parseInt(val, 10)), {
     message: 'Expected number, received a string',
   }),
+  pdf: z
+    .instanceof(FileList)
+    .refine((files) => files?.length === 1, 'File is required')
+    .refine(
+      (files) => files?.length === 1 && files?.[0].size <= 10000000,
+      `Max file size is 10MB.`,
+    )
+    .refine(
+      (files) => files?.[0]?.type === 'application/pdf',
+      'Only PDF files are accepted.',
+    ),
   image: z
     .instanceof(FileList)
     .refine((files) => files?.length === 1, 'File is required')
@@ -52,12 +64,41 @@ export function SellTicketForm() {
   const user = getUser()
   const [localUrl, setLocalUrl] = useState('')
   const [imageUrl, setImageUrl] = useState('')
+  const [pdfUrl, setPdfUrl] = useState('')
+  const [pdfPath, setPdfPath] = useState('')
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       negotiable: false,
     },
   })
+
+  async function handlePdfUpload(event: ChangeEvent<HTMLInputElement>) {
+    if (!event.target.files?.length) {
+      console.log('No file selected')
+      return
+    }
+
+    setPdfUrl('')
+    setPdfPath('')
+
+    const formData = new FormData()
+
+    formData.append(event.target.name, event.target.files[0])
+
+    const config = {
+      headers: { 'content-type': 'multipart/form-data' },
+    } as AxiosRequestConfig
+
+    try {
+      const response = await api.post('/uploadPdf', formData, config)
+      const data = JSON.parse(response.data)
+      setPdfUrl(data.url)
+      setPdfPath(data.path)
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const ticket = {
@@ -92,6 +133,7 @@ export function SellTicketForm() {
   }
 
   const fileRef = form.register('image')
+  const pdfRef = form.register('pdf')
 
   return (
     <Form {...form}>
@@ -102,6 +144,26 @@ export function SellTicketForm() {
           setLocalUrl={setLocalUrl}
           fileRef={fileRef}
           control={form.control}
+        />
+        <FormField
+          control={form.control}
+          name="pdf"
+          render={() => (
+            <FormItem>
+              <FormLabel>Arquivo</FormLabel>
+              <FormControl>
+                <Input
+                  type="file"
+                  {...pdfRef}
+                  onChange={(event) => {
+                    handlePdfUpload(event)
+                    fileRef.onChange(event)
+                  }}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
         <FormField
           control={form.control}

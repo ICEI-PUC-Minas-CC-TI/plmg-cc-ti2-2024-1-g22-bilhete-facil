@@ -49,6 +49,7 @@ public class Aplicacao {
         CompraDAO compraDAO = new CompraDAO();
 
         port(6789);
+        
         staticFiles.location("/public");
 
         options("/*", (request, response) -> {
@@ -180,7 +181,7 @@ public class Aplicacao {
         }, jsonTransformer);
 
         post("/uploadPdf", (request, response) -> {
-            String uploadDirectory = "uploads/pdfs"; // Diretório de upload
+            String uploadDirectory = "server/src/main/resources/public/pdfs"; // Diretório de upload
 
             File uploadDir = new File(uploadDirectory);
             if (!uploadDir.exists()) {
@@ -204,7 +205,10 @@ public class Aplicacao {
                         File storeFile = new File(filePath);
                         item.write(storeFile);
                         response.status(200);
-                        return "PDF carregado com sucesso! Caminho: " + filePath;
+                        Map<String, Object> data = new HashMap<>();
+                        data.put("url", uniqueName);
+                        data.put("path", filePath);
+                        return data;
                     }
                 }
             } catch (Exception ex) {
@@ -214,7 +218,7 @@ public class Aplicacao {
 
             response.status(400);
             return "Nenhum arquivo enviado.";
-        });
+        }, jsonTransformer);
 
         post("/insere_negociacao", (request, response) -> {
             Negociacao negociacao = gson.fromJson(request.body(), Negociacao.class);

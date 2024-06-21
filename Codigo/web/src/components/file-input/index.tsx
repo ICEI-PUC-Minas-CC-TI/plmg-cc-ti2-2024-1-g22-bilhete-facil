@@ -1,4 +1,5 @@
 import { Camera, Spinner } from '@phosphor-icons/react'
+import axios, { AxiosRequestConfig } from 'axios'
 import { ChangeEvent, useState } from 'react'
 import { Control, UseFormRegisterReturn } from 'react-hook-form'
 import {
@@ -9,11 +10,11 @@ import {
   FormMessage,
 } from '../ui/form'
 import { Input } from '../ui/input'
-import axios, { AxiosRequestConfig } from 'axios'
 
 interface FileInputInterface {
   control?: Control<{
     image: FileList
+    pdf: FileList
     event: string
     description: string
     price: string
